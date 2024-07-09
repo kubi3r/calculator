@@ -31,6 +31,20 @@ function operate(operator, a, b) {
     }
 }
 
+const calculator = document.querySelector('#calculator')
+const display = document.querySelector('#display')
+
+let displayValue;
+
+calculator.addEventListener('click', (e) => {
+    if (e.target.textContent === 'Clear') {
+        display.textContent = ''
+    } else {
+        display.textContent += e.target.textContent
+    }
+    displayValue = display.textContent
+})
+
 let a;
 let b;
 let operator;
