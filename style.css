@@ -1,0 +1,12 @@
+button {
+    height: 25px;
+    width: 25px;
+}
+
+#clear {
+    width: 50px;
+}
+
+#display {
+    height: 18px;
+}
