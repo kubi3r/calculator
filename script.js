@@ -14,7 +14,7 @@ function divide(a, b) {
     if (a === 0 || b === 0) {
         const division = document.querySelector('.division');
         division.remove();
-        return 'Division privileges revoked';
+        return '';
     } else {
         return a / b;
     }
@@ -22,48 +22,70 @@ function divide(a, b) {
 }
 
 function operate(operator, a, b) {
+    if (!(operator && a && b)) { // If operator/a/b haven't been entered yet, don't operate
+        return;
+    }
+    let result;
     switch(operator) {
         case '+':
-            display.textContent = add(a, b);
+            result = add(parseInt(a), parseInt(b));
             break;
         case '-':
-            display.textContent = subtract(a, b);
+            result = subtract(parseInt(a), parseInt(b));
             break;
         case '*':
-            display.textContent = multiply(a, b);
+            result = multiply(parseInt(a), parseInt(b));
             break;
         case '/':
-            display.textContent = divide(a, b);
+            result = divide(parseInt(a), parseInt(b));
             break;
     }
+    globalA = Math.round(result * 1000) / 1000;
+    globalB = '';
+    globalOperator = '';
+    return result
 }
 
-function splitDisplay(display) {
-    const operatorIndex = display
-        .split('')
-        .findIndex(char => '+-*/'.includes(char))
-    const split = display.split(display[operatorIndex])
-    operate(display[operatorIndex], parseFloat(split[0]), parseFloat(split[1]))
+function updateDisplay(operator, a, b) {
+    display.textContent = `${a} ${operator} ${b}`
 }
 
 const calculator = document.querySelector('#calculator');
 const display = document.querySelector('#display');
 
-let displayValue;
+let globalA = '';
+let globalB = '';
+let globalOperator = ''
 
 calculator.addEventListener('click', (e) => {
-    const operation = e.target.textContent;
-    if (operation === '=') {
-        displayValue = display.textContent;
-        splitDisplay(displayValue);
-    } else if (operation === 'Clear') {
-        display.textContent = '';
-    } else {
-        display.textContent += operation;
-    };
-    
+    const char = e.target.textContent;
+    switch(char) {
+        case '=':
+            if (globalA && globalB && globalOperator) {
+                operate(globalOperator, globalA, globalB)
+            }
+            break;
+        case 'Clear':
+            globalA = '';
+            globalB = '';
+            globalOperator = ''
+            break;
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+            if (globalOperator) { // If an operator has already been entered
+                operate(globalOperator, globalA, globalB)
+            }
+            globalOperator = char;
+            break;
+        default:
+            if (!globalOperator) { // If operator hasn't been entered yet (still on 1st number)
+                globalA += char;
+            } else {
+                globalB += char;
+            }
+            break;
+    }
+    updateDisplay(globalOperator, globalA, globalB)
 })
-
-let a;
-let b;
-let operator;
