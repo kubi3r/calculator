@@ -57,46 +57,50 @@ let globalA = '';
 let globalB = '';
 let globalOperator = ''
 
-calculator.addEventListener('click', (e) => {
-    const char = e.target.textContent;
-    switch(char) {
-        case '=':
-            if (globalA && globalB && globalOperator) {
-                operate(globalOperator, globalA, globalB)
-            }
-            break;
-        case 'Clear':
-            globalA = '';
-            globalB = '';
-            globalOperator = ''
-            break;
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-            if (globalOperator) { // If an operator has already been entered
-                operate(globalOperator, globalA, globalB)
-            }
-            globalOperator = char;
-            break;
-        case '.':
-            if (!globalOperator) { // If operator hasn't been entered yet (still on 1st number)
-                if (!globalA.includes(char)) { // If dot isn't already entered
-                    globalA += char
+const buttons = document.querySelectorAll('button')
+
+for (let button of buttons) {
+    button.addEventListener('click', (e) => {
+        const char = e.target.textContent;
+        switch(char) {
+            case '=':
+                if (globalA && globalB && globalOperator) {
+                    operate(globalOperator, globalA, globalB)
                 }
-            } else {
-                if (!globalB.includes(char)) { // If dot isn't already entered
-                    globalB += char
+                break;
+            case 'Clear':
+                globalA = '';
+                globalB = '';
+                globalOperator = ''
+                break;
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+                if (globalOperator) { // If an operator has already been entered
+                    operate(globalOperator, globalA, globalB)
                 }
-            }
-            break;
-        default:
-            if (!globalOperator) { // If operator hasn't been entered yet (still on 1st number)
-                globalA += char;
-            } else {
-                globalB += char;
-            }
-            break;
-    }
-    updateDisplay(globalOperator, globalA, globalB)
-})
+                globalOperator = char;
+                break;
+            case '.':
+                if (!globalOperator) { // If operator hasn't been entered yet (still on 1st number)
+                    if (!globalA.includes(char)) { // If dot isn't already entered
+                        globalA += char
+                    }
+                } else {
+                    if (!globalB.includes(char)) { // If dot isn't already entered
+                        globalB += char
+                    }
+                }
+                break;
+            default:
+                if (!globalOperator) { // If operator hasn't been entered yet (still on 1st number)
+                    globalA += char;
+                } else {
+                    globalB += char;
+                }
+                break;
+        }
+        updateDisplay(globalOperator, globalA, globalB)
+    })
+}
