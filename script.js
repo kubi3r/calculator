@@ -17,32 +17,44 @@ function divide(a, b) {
 function operate(operator, a, b) {
     switch(operator) {
         case '+':
-            add(a, b);
+            display.textContent = add(a, b);
             break;
         case '-':
-            subtract(a, b);
+            display.textContent = subtract(a, b);
             break;
         case '*':
-            multiply(a, b);
+            display.textContent = multiply(a, b);
             break;
         case '/':
-            divide(a, b);
+            display.textContent = divide(a, b);
             break;
     }
 }
 
-const calculator = document.querySelector('#calculator')
-const display = document.querySelector('#display')
+function splitDisplay(display) {
+    const operatorIndex = display
+        .split('')
+        .findIndex(char => '+-*/'.includes(char))
+    const split = display.split(display[operatorIndex])
+    operate(display[operatorIndex], parseFloat(split[0]), parseFloat(split[1]))
+}
+
+const calculator = document.querySelector('#calculator');
+const display = document.querySelector('#display');
 
 let displayValue;
 
 calculator.addEventListener('click', (e) => {
-    if (e.target.textContent === 'Clear') {
-        display.textContent = ''
+    const operation = e.target.textContent;
+    if (operation === '=') {
+        displayValue = display.textContent;
+        splitDisplay(displayValue);
+    } else if (operation === 'Clear') {
+        display.textContent = '';
     } else {
-        display.textContent += e.target.textContent
-    }
-    displayValue = display.textContent
+        display.textContent += operation;
+    };
+    
 })
 
 let a;
