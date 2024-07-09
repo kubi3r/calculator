@@ -28,16 +28,16 @@ function operate(operator, a, b) {
     let result;
     switch(operator) {
         case '+':
-            result = add(parseInt(a), parseInt(b));
+            result = add(parseFloat(a), parseFloat(b));
             break;
         case '-':
-            result = subtract(parseInt(a), parseInt(b));
+            result = subtract(parseFloat(a), parseFloat(b));
             break;
         case '*':
-            result = multiply(parseInt(a), parseInt(b));
+            result = multiply(parseFloat(a), parseFloat(b));
             break;
         case '/':
-            result = divide(parseInt(a), parseInt(b));
+            result = divide(parseFloat(a), parseFloat(b));
             break;
     }
     globalA = Math.round(result * 1000) / 1000;
@@ -78,6 +78,17 @@ calculator.addEventListener('click', (e) => {
                 operate(globalOperator, globalA, globalB)
             }
             globalOperator = char;
+            break;
+        case '.':
+            if (!globalOperator) { // If operator hasn't been entered yet (still on 1st number)
+                if (!globalA.includes(char)) { // If dot isn't already entered
+                    globalA += char
+                }
+            } else {
+                if (!globalB.includes(char)) { // If dot isn't already entered
+                    globalB += char
+                }
+            }
             break;
         default:
             if (!globalOperator) { // If operator hasn't been entered yet (still on 1st number)
