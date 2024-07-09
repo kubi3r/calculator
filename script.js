@@ -11,7 +11,14 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return a / b;
+    if (a === 0 || b === 0) {
+        const division = document.querySelector('.division');
+        division.remove();
+        return 'Division privileges revoked';
+    } else {
+        return a / b;
+    }
+    
 }
 
 function operate(operator, a, b) {
